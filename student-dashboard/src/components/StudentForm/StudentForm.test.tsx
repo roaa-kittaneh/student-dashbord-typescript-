@@ -1,3 +1,4 @@
+// @jest-environment jsdom
 import { render, screen, fireEvent } from "@testing-library/react";
 import { expect, test, vi } from "vitest";
 import StudentForm from "./StudentForm";
@@ -6,11 +7,14 @@ test("must call the add function when the form is submitted", () => {
   const mockAdd = vi.fn();
   render(<StudentForm onAdd={mockAdd} />);
 
-  fireEvent.change(screen.getByLabelText(/Name/i), {
+  fireEvent.change(screen.getByLabelText(/Full Name/i), {
     target: { value: "Ruaa" },
   });
   fireEvent.change(screen.getByLabelText(/Email/i), {
     target: { value: "test@test.com" },
+  });
+  fireEvent.change(screen.getByLabelText(/Course/i), {
+    target: { value: "Computer Science" },
   });
   fireEvent.change(screen.getByLabelText(/GPA/i), { target: { value: "3.5" } });
 

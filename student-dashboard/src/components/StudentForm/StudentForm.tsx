@@ -36,8 +36,9 @@ const StudentForm: React.FC<Props> = ({ onAdd }) => {
       
       <div className={styles.formGrid}>
         <div className={styles.inputGroup}>
-          <label>Full Name</label>
+          <label htmlFor="student-name">Full Name</label>
           <input 
+            id="student-name"
             type="text"
             className={styles.inputField} 
             value={form.name}
@@ -47,8 +48,9 @@ const StudentForm: React.FC<Props> = ({ onAdd }) => {
         </div>
 
         <div className={styles.inputGroup}>
-          <label>Email</label>
+          <label htmlFor="student-email">Email</label>
           <input 
+            id="student-email"
             type="email"
             className={styles.inputField} 
             value={form.email}
@@ -58,8 +60,9 @@ const StudentForm: React.FC<Props> = ({ onAdd }) => {
         </div>
 
         <div className={styles.inputGroup}>
-          <label>Course</label>
+          <label htmlFor="student-course">Course</label>
           <input 
+            id="student-course"
             type="text"
             className={styles.inputField} 
             value={form.course}
@@ -69,8 +72,9 @@ const StudentForm: React.FC<Props> = ({ onAdd }) => {
         </div>
 
         <div className={styles.inputGroup}>
-          <label>GPA</label>
+          <label htmlFor="student-gpa">GPA</label>
           <input 
+            id="student-gpa"
             type="number"
             step="0.01"
             min="0"
