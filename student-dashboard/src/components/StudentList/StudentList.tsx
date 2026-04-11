@@ -5,9 +5,11 @@ import styles from './StudentList.module.css';
 interface Props {
   students: Student[];
   onViewDetails: (student: Student) => void;
+    onDelete: (id: string) => void;
+
 }
 
-const StudentList: React.FC<Props> = ({ students, onViewDetails }) => {
+const StudentList: React.FC<Props> = ({ students, onViewDetails, onDelete }) => {
   if (students.length === 0) {
     return <p style={{ textAlign: 'center', color: '#666' }}>no students found.</p>;
   }
@@ -31,9 +33,18 @@ const StudentList: React.FC<Props> = ({ students, onViewDetails }) => {
                 <button 
                   className={styles.detailsBtn}
                   onClick={() => onViewDetails(student)}
+                  
+                  
                 >
                   View Details
                 </button>
+                <button 
+                  className={styles.deleteBtn}
+                  onClick={() => onDelete(student.id)}
+                >
+                  Delete
+                </button>
+
               </td>
             </tr>
           ))}
