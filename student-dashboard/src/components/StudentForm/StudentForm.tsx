@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Student } from '../../types/student';
 import { toast } from 'react-toastify';
 import styles from './StudentForm.module.css';
@@ -10,11 +10,12 @@ const INITIAL_VALUES = { name: '', email: '', course: '', gpa: '' };
 const StudentForm: React.FC = () => {
   const { addStudent } = useStudents();
   const { values, handleChange, reset } = useForm(INITIAL_VALUES);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!values.name || !values.email || !values.course || !values.gpa) {
-      toast.error("Please fill all fields!");
+      toast.error('Please fill all fields!');
       return;
     }
 
@@ -26,9 +27,16 @@ const StudentForm: React.FC = () => {
       gpa: parseFloat(values.gpa),
     };
 
-    addStudent(newStudent);
-    reset();
-    toast.success("Student added successfully!");
+    try {
+      setIsSubmitting(true);
+      await addStudent(newStudent);
+      reset();
+      toast.success('Student added successfully!');
+    } catch {
+      toast.error('Failed to add student. Is the server running?');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -92,7 +100,9 @@ const StudentForm: React.FC = () => {
         </div>
       </div>
 
-      <button type="submit" className={styles.submitBtn}>Add Student</button>
+      <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
+        {isSubmitting ? 'Adding…' : 'Add Student'}
+      </button>
     </form>
   );
 };

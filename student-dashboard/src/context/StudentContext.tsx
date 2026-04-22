@@ -1,28 +1,47 @@
-import React, { createContext, useContext } from 'react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { Student } from '../types/student';
+import { fetchStudents, createStudent, deleteStudent } from '../services/studentService';
 
 interface StudentContextType {
   students: Student[];
-  addStudent: (student: Student) => void;
-  removeStudent: (id: string) => void;
+  loading: boolean;
+  error: string | null;
+  addStudent: (student: Student) => Promise<void>;
+  removeStudent: (id: string) => Promise<void>;
 }
 
 export const StudentContext = createContext<StudentContextType | null>(null);
 
 export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [students, setStudents] = useLocalStorage<Student[]>('students_list', []);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const addStudent = (student: Student) => {
-    setStudents(prev => [...prev, student]);
+  useEffect(() => {
+    fetchStudents()
+      .then(data => {
+        setStudents(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError('Could not reach the server. Run: npm run server');
+        setLoading(false);
+        console.error(err);
+      });
+  }, []);
+
+  const addStudent = async (student: Student): Promise<void> => {
+    const created = await createStudent(student);
+    setStudents(prev => [...prev, created]);
   };
 
-  const removeStudent = (id: string) => {
+  const removeStudent = async (id: string): Promise<void> => {
+    await deleteStudent(id);
     setStudents(prev => prev.filter(s => s.id !== id));
   };
 
   return (
-    <StudentContext.Provider value={{ students, addStudent, removeStudent }}>
+    <StudentContext.Provider value={{ students, loading, error, addStudent, removeStudent }}>
       {children}
     </StudentContext.Provider>
   );

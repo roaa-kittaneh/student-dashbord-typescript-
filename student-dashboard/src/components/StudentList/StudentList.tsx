@@ -5,9 +5,26 @@ import { useStudents } from '../../context/StudentContext';
 import styles from './StudentList.module.css';
 
 const StudentList: React.FC = () => {
-  const { students, removeStudent } = useStudents();
+  const { students, loading, error, removeStudent } = useStudents();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+
+  if (loading) {
+    return (
+      <div className={styles.centered}>
+        <div className={styles.spinner} />
+        <p className={styles.hint}>Loading students…</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.errorAlert}>
+        <strong>Connection error:</strong> {error}
+      </div>
+    );
+  }
 
   const filteredStudents = students.filter(
     s =>
@@ -15,13 +32,17 @@ const StudentList: React.FC = () => {
       s.course.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleDelete = (id: string) => {
-    removeStudent(id);
-    toast.info('Student deleted.');
+  const handleDelete = async (id: string) => {
+    try {
+      await removeStudent(id);
+      toast.info('Student deleted.');
+    } catch {
+      toast.error('Failed to delete student.');
+    }
   };
 
   if (students.length === 0) {
-    return <p style={{ textAlign: 'center', color: '#666' }}>no students found.</p>;
+    return <p style={{ textAlign: 'center', color: '#666' }}>No students yet. Add one above!</p>;
   }
 
   return (
@@ -48,13 +69,13 @@ const StudentList: React.FC = () => {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>name</th>
-                <th>course</th>
-                <th>actions</th>
+                <th>Name</th>
+                <th>Course</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredStudents.map((student) => (
+              {filteredStudents.map(student => (
                 <tr key={student.id}>
                   <td>{student.name}</td>
                   <td>{student.course}</td>

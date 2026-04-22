@@ -1,0 +1,11 @@
+{
+  "students": [
+    {
+      "id": "1776871879249",
+      "name": "roaa kittaneh",
+      "email": "roaakittaneh2004@gmail.com",
+      "course": "software eng",
+      "gpa": 3.3
+    }
+  ]
+}

@@ -5,9 +5,15 @@ import StudentForm from "./StudentForm";
 import { StudentContext } from "../../context/StudentContext";
 
 test("must call the add function when the form is submitted", () => {
-  const mockAdd = vi.fn();
+  const mockAdd = vi.fn().mockResolvedValue(undefined);
   render(
-    <StudentContext.Provider value={{ students: [], addStudent: mockAdd, removeStudent: vi.fn() }}>
+    <StudentContext.Provider value={{
+      students: [],
+      loading: false,
+      error: null,
+      addStudent: mockAdd,
+      removeStudent: vi.fn().mockResolvedValue(undefined),
+    }}>
       <StudentForm />
     </StudentContext.Provider>
   );

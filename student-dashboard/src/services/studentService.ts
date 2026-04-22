@@ -1,24 +1,30 @@
+import axios from 'axios';
 import type { Student } from '../types/student';
 
-const STORAGE_KEY = 'students_list';
+const api = axios.create({ baseURL: 'http://localhost:3001' });
 
-function readAll(): Student[] {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  return raw ? (JSON.parse(raw) as Student[]) : [];
-}
+/** GET /students */
+export const fetchStudents = (): Promise<Student[]> =>
+  api.get<Student[]>('/students').then(r => r.data);
 
-/**
- * Returns all students.
- * Swap body with: return fetch('/api/students').then(r => r.json())
- */
-export function fetchStudents(): Promise<Student[]> {
-  return Promise.resolve(readAll());
-}
+/** GET /students/:id  —  returns null on 404 */
+export const fetchStudentById = (id: string): Promise<Student | null> =>
+  api
+    .get<Student>(`/students/${id}`)
+    .then(r => r.data)
+    .catch(err => {
+      if (axios.isAxiosError(err) && err.response?.status === 404) return null;
+      throw err;
+    });
 
-/**
- * Returns a single student by id, or null if not found.
- * Swap body with: return fetch(`/api/students/${id}`).then(r => r.json())
- */
-export function fetchStudentById(id: string): Promise<Student | null> {
-  return Promise.resolve(readAll().find(s => s.id === id) ?? null);
-}
+/** POST /students */
+export const createStudent = (student: Student): Promise<Student> =>
+  api.post<Student>('/students', student).then(r => r.data);
+
+/** PUT /students/:id */
+export const updateStudent = (student: Student): Promise<Student> =>
+  api.put<Student>(`/students/${student.id}`, student).then(r => r.data);
+
+/** DELETE /students/:id */
+export const deleteStudent = (id: string): Promise<void> =>
+  api.delete(`/students/${id}`).then(() => undefined);
