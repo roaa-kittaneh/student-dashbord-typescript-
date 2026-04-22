@@ -2,10 +2,15 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { expect, test, vi } from "vitest";
 import StudentForm from "./StudentForm";
+import { StudentContext } from "../../context/StudentContext";
 
 test("must call the add function when the form is submitted", () => {
   const mockAdd = vi.fn();
-  render(<StudentForm onAdd={mockAdd} />);
+  render(
+    <StudentContext.Provider value={{ students: [], addStudent: mockAdd, removeStudent: vi.fn() }}>
+      <StudentForm />
+    </StudentContext.Provider>
+  );
 
   fireEvent.change(screen.getByLabelText(/Full Name/i), {
     target: { value: "Ruaa" },

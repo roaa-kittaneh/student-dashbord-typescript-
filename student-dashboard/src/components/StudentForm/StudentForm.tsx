@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import type { Student } from '../../types/student';
 import { toast } from 'react-toastify';
-import styles from './StudentForm.module.css'; 
+import styles from './StudentForm.module.css';
+import { useStudents } from '../../context/StudentContext';
 
-interface Props {
-  onAdd: (student: Student) => void;
-}
-
-const StudentForm: React.FC<Props> = ({ onAdd }) => {
+const StudentForm: React.FC = () => {
+  const { addStudent } = useStudents();
   const [form, setForm] = useState({ name: '', email: '', course: '', gpa: '' });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -16,16 +14,16 @@ const StudentForm: React.FC<Props> = ({ onAdd }) => {
       toast.error("Please fill all fields!");
       return;
     }
-    
+
     const newStudent: Student = {
       id: Date.now().toString(),
       name: form.name,
       email: form.email,
       course: form.course,
-      gpa: parseFloat(form.gpa)
+      gpa: parseFloat(form.gpa),
     };
 
-    onAdd(newStudent);
+    addStudent(newStudent);
     setForm({ name: '', email: '', course: '', gpa: '' });
     toast.success("Student added successfully!");
   };

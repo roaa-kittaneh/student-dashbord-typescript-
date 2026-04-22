@@ -1,73 +1,29 @@
-# React + TypeScript + Vite
+# Student Dashboard 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript dashboard to manage student registrations with local persistence.
 
-Currently, two official plugins are available:
+<img width="526" height="544" alt="image" src="https://github.com/user-attachments/assets/23d7d875-ae87-4a2b-94c9-2a28bfe4c282" />
+<img width="1282" height="506" alt="Screenshot 2026-04-11 225713" src="https://github.com/user-attachments/assets/16244ed0-762c-4bfb-8951-374ddb3da0e6" />
+<img width="913" height="533" alt="Screenshot 2026-04-11 225638" src="https://github.com/user-attachments/assets/39e6e605-ac8f-4503-b2c6-eb3b8fad56fa" />
+<img width="265" height="514" alt="Screenshot 2026-04-11 225803" src="https://github.com/user-attachments/assets/6f14cf69-f09f-44d0-a400-56747b7f94df" />
+<img width="511" height="216" alt="image" src="https://github.com/user-attachments/assets/c6c19090-6c6d-44d3-9bbf-754b70983652" />
+<img width="621" height="186" alt="Screenshot 2026-04-11 232325" src="https://github.com/user-attachments/assets/dab807a3-9db5-415d-9f8e-37c2ea856ca0" />
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Features 
+* **Manage:** Register, Search, and Delete students.
+* **Storage:** Data saved in `localStorage`.
+* **Design:** Fully responsive using CSS Modules.
+* **Testing:** Unit tests with Vitest.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tech Stack 
+* React, TypeScript, Vite, React-Toastify.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Quick Start 
+1. `npm install`
+2. `npm run dev`  # Run App
+3. `npm run test` # Run Tests
