@@ -1,13 +1,20 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useStudents } from '../context/StudentContext';
+import useFetch from '../hooks/useFetch';
+import { fetchStudentById } from '../services/studentService';
 
 const StudentDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { students } = useStudents();
+  const { data: student, loading, error } = useFetch(() => fetchStudentById(id!), [id]);
 
-  const student = students.find(s => s.id === id);
+  if (loading) {
+    return <p style={{ textAlign: 'center', color: '#666' }}>Loading...</p>;
+  }
+
+  if (error) {
+    return <p style={{ textAlign: 'center', color: '#dc3545' }}>Error: {error}</p>;
+  }
 
   if (!student) {
     return (

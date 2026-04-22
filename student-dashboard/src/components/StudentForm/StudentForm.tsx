@@ -1,86 +1,93 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { Student } from '../../types/student';
 import { toast } from 'react-toastify';
 import styles from './StudentForm.module.css';
 import { useStudents } from '../../context/StudentContext';
+import useForm from '../../hooks/useForm';
+
+const INITIAL_VALUES = { name: '', email: '', course: '', gpa: '' };
 
 const StudentForm: React.FC = () => {
   const { addStudent } = useStudents();
-  const [form, setForm] = useState({ name: '', email: '', course: '', gpa: '' });
+  const { values, handleChange, reset } = useForm(INITIAL_VALUES);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.course || !form.gpa) {
+    if (!values.name || !values.email || !values.course || !values.gpa) {
       toast.error("Please fill all fields!");
       return;
     }
 
     const newStudent: Student = {
       id: Date.now().toString(),
-      name: form.name,
-      email: form.email,
-      course: form.course,
-      gpa: parseFloat(form.gpa),
+      name: values.name,
+      email: values.email,
+      course: values.course,
+      gpa: parseFloat(values.gpa),
     };
 
     addStudent(newStudent);
-    setForm({ name: '', email: '', course: '', gpa: '' });
+    reset();
     toast.success("Student added successfully!");
   };
 
   return (
     <form className={styles.formCard} onSubmit={handleSubmit}>
       <h2 className={styles.formTitle}>Add New Student</h2>
-      
+
       <div className={styles.formGrid}>
         <div className={styles.inputGroup}>
           <label htmlFor="student-name">Full Name</label>
-          <input 
+          <input
             id="student-name"
+            name="name"
             type="text"
-            className={styles.inputField} 
-            value={form.name}
+            className={styles.inputField}
+            value={values.name}
             placeholder="Enter student name"
-            onChange={e => setForm({...form, name: e.target.value})} 
+            onChange={handleChange}
           />
         </div>
 
         <div className={styles.inputGroup}>
           <label htmlFor="student-email">Email</label>
-          <input 
+          <input
             id="student-email"
+            name="email"
             type="email"
-            className={styles.inputField} 
-            value={form.email}
+            className={styles.inputField}
+            value={values.email}
             placeholder="student@example.com"
-            onChange={e => setForm({...form, email: e.target.value})} 
+            onChange={handleChange}
           />
         </div>
 
         <div className={styles.inputGroup}>
           <label htmlFor="student-course">Course</label>
-          <input 
+          <input
             id="student-course"
+            name="course"
             type="text"
-            className={styles.inputField} 
-            value={form.course}
+            className={styles.inputField}
+            value={values.course}
             placeholder="e.g., Computer Science"
-            onChange={e => setForm({...form, course: e.target.value})} 
+            onChange={handleChange}
           />
         </div>
 
         <div className={styles.inputGroup}>
           <label htmlFor="student-gpa">GPA</label>
-          <input 
+          <input
             id="student-gpa"
+            name="gpa"
             type="number"
             step="0.01"
             min="0"
             max="4.0"
-            className={styles.inputField} 
-            value={form.gpa}
+            className={styles.inputField}
+            value={values.gpa}
             placeholder="e.g., 3.8"
-            onChange={e => setForm({...form, gpa: e.target.value})} 
+            onChange={handleChange}
           />
         </div>
       </div>
